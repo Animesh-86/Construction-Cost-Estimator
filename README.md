@@ -47,13 +47,13 @@ pip install pandas, scikit-learn, numpy
 
 2. Provide the required input values when prompted: 
 
-    Enter Area (sq.ft): 1200
-    Enter Cement Quantity (kg): 120
-    Enter Steel Quantity (kg): 120
-    Enter Total Labor Hours: 200
-    Enter Location Index (0=Rural, 1=Urban, 2=Metro): 1
+    -Enter Area (sq.ft): 1200
+    -Enter Cement Quantity (kg): 120
+    -Enter Steel Quantity (kg): 120
+    -Enter Total Labor Hours: 200
+    -Enter Location Index (0=Rural, 1=Urban, 2=Metro): 1
 
-    Estimated Construction Cost: ₹1,167,633.77  
+    -Estimated Construction Cost: ₹1,167,633.77  
 
 # 🌱 Future Improvements
 
