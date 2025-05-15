@@ -9,66 +9,104 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // List to store saved estimation data
-  final List<Map<String, dynamic>> savedItems = [];
+  List<Map<String, dynamic>> entries = [];
+
+  void openEstimatorForm() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const EstimatorFormScreen()),
+    );
+
+    if (result != null && result is Map<String, dynamic>) {
+      setState(() {
+        entries.add(result);
+      });
+    }
+  }
+
+  void deleteEntry(int index) {
+    final removedEntry = entries[index];
+    setState(() {
+      entries.removeAt(index);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Entry deleted'),
+        action: SnackBarAction(
+          label: 'UNDO',
+          onPressed: () {
+            setState(() {
+              entries.insert(index, removedEntry);
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget buildEntryCard(Map<String, dynamic> entry, int index) {
+    return Dismissible(
+      key: Key(entry.hashCode.toString()),
+      direction: DismissDirection.endToStart,
+      onDismissed: (_) => deleteEntry(index),
+      background: Container(
+        color: Colors.red,
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: const Icon(Icons.delete, color: Colors.white),
+      ),
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+        child: ListTile(
+          title: Text(
+            'Estimated Cost: ₹${(entry['predictedCost'] ?? 0).toStringAsFixed(2)}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(
+              'Area: ${entry['area']} sq.ft, Cement: ${entry['cement']} kg, Steel: ${entry['steel']} kg, Labor: ${entry['labor']} hrs\nLocation: ${locationLabel(entry['locationIndex'])}'),
+          isThreeLine: true,
+          trailing: const Icon(Icons.swipe),
+        ),
+      ),
+    );
+  }
+
+  String locationLabel(int index) {
+    switch (index) {
+      case 0:
+        return 'Rural';
+      case 1:
+        return 'Urban';
+      case 2:
+        return 'Metro';
+      default:
+        return 'Unknown';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Estimations'),
+        title: const Text('Construction Cost Estimator'),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 108, 23, 17),
-              Color.fromARGB(255, 176, 66, 20),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: savedItems.isEmpty
-            ? const Center(
-                child: Text(
-                  'No estimations yet.',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-              )
-            : ListView.builder(
-                itemCount: savedItems.length,
-                itemBuilder: (context, index) {
-                  final item = savedItems[index];
-                  return Card(
-                    // ignore: deprecated_member_use
-                    color: Colors.white.withOpacity(0.9),
-                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    child: ListTile(
-                      title: Text('Estimated Cost: ₹${item['predictedCost'].toStringAsFixed(2)}'),
-                      subtitle: Text(
-                        'Area: ${item['area']} sqft, Cement: ${item['cement']}kg, Steel: ${item['steel']}kg, Labor: ${item['labor']} hrs, Location: ${['Rural', 'Urban', 'Metro'][item['locationIndex']]}',
-                      ),
-                    ),
-                  );
-                },
+      body: entries.isEmpty
+          ? const Center(
+              child: Text(
+                'No saved entries yet.\nTap + to add new estimation.', 
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, color: Colors.grey), 
               ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => EstimatorFormScreen(
-                onSave: (data) {
-                  setState(() {
-                    savedItems.add(data); // Save the entry
-                  });
-                },
-              ),
+            )
+          : ListView.builder(
+              itemCount: entries.length,
+              itemBuilder: (context, index) =>
+                  buildEntryCard(entries[index], index),
             ),
-          );
-        },
+      floatingActionButton: FloatingActionButton(
+        onPressed: openEstimatorForm,
+        tooltip: 'Add New Estimation',
         child: const Icon(Icons.add),
       ),
     );
