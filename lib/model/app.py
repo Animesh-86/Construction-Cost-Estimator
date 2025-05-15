@@ -3,7 +3,7 @@ import joblib
 import numpy as np
 
 app = Flask(__name__)
-model = joblib.load('C:\\CipherVault\\Programming\\Python\\Projects\\Construction Cost Estimator\\UI\\constrution_cost_estimator\\lib\\Model\\cost_model.pkl')  # Load your trained model
+model = joblib.load('C:\\CipherVault\\Programming\\Python\\Projects\\Construction Cost Estimator\\lib\\Model\\cost_model.pkl')  # Load your trained model
 
 @app.route('/predict', methods=['POST'])  # ✅ MUST be POST
 def predict():
