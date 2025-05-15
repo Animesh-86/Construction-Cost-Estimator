@@ -1,6 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'home.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'home.dart'; // Replace with your main screen
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -9,100 +9,56 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
-  late AnimationController _truckController;
-  late Animation<Offset> _truckOffset;
-  bool _showTitle = false;
-  bool _swipeTitle = false;
-
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
-    // Truck animation setup
-    _truckController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
-
-    _truckOffset = Tween<Offset>(
-      begin: const Offset(1.5, 0), // Off-screen right
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _truckController,
-      curve: Curves.easeOut,
-    ));
-
-    // Sequence
-    Timer(const Duration(milliseconds: 400), () {
-      setState(() {
-        _showTitle = true; // Fade in title
-      });
-    });
-
-    Timer(const Duration(milliseconds: 1000), () {
-      _truckController.forward(); // Slide truck in
-    });
-
-    Timer(const Duration(milliseconds: 1800), () {
-      setState(() {
-        _swipeTitle = true; // Slide title out
-      });
-    });
-
-    Timer(const Duration(milliseconds: 2600), () {
-      Navigator.pushReplacement(
-        context,
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const HomeScreen()),
       );
     });
   }
 
   @override
-  void dispose() {
-    _truckController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 233, 105, 30),
-      body: Stack(
-        children: [
-          Center(
-            child: AnimatedSlide(
-              offset: _swipeTitle ? const Offset(-2, 0) : Offset.zero,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-              child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 500),
-                opacity: _showTitle ? 1.0 : 0.0,
-                child: Text(
-                  'Construction Estimator',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF3E1F0A),
+              Color(0xFF1E0B03),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.construction, size: 80, color: Colors.white),
+              const SizedBox(height: 20),
+              Text(
+                'Construction Estimator',
+                style: GoogleFonts.lato(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
-            ),
-          ),
-          Positioned(
-            bottom: 100,
-            left: 0,
-            right: 0,
-            child: SlideTransition(
-              position: _truckOffset,
-              child: const Icon(
-                Icons.precision_manufacturing_rounded,
-                size: 70,
-                color: Colors.white,
+              const SizedBox(height: 10),
+              Text(
+                'Powered by ML',
+                style: GoogleFonts.lato(
+                  fontSize: 16,
+                  color: Colors.white70,
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

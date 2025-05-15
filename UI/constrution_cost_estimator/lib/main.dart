@@ -6,12 +6,12 @@ import 'screens/splash.dart'; // << Use splash as entry
 final theme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.dark,
-    seedColor: Color.fromARGB(255, 233, 105, 30),
+    seedColor: Color.fromARGB(255, 99, 43, 11),
   ),
   textTheme: GoogleFonts.latoTextTheme(),
   useMaterial3: true,
   appBarTheme: const AppBarTheme(
-    backgroundColor: Color.fromARGB(255, 233, 105, 30),
+    backgroundColor: Color.fromARGB(255, 54, 23, 5),
     foregroundColor: Colors.white,
     titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
   ),
