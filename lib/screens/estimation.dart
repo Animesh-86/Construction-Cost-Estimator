@@ -64,9 +64,9 @@ class _EstimatorFormScreenState extends State<EstimatorFormScreen> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
     } finally {
       setState(() {
         isLoading = false;
@@ -112,8 +112,11 @@ class _EstimatorFormScreenState extends State<EstimatorFormScreen> {
                   labelText: 'Area (sq.ft)',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) =>
-                    (value == null || value.isEmpty) ? 'Please enter area' : null,
+                validator:
+                    (value) =>
+                        (value == null || value.isEmpty)
+                            ? 'Please enter area'
+                            : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
@@ -124,9 +127,11 @@ class _EstimatorFormScreenState extends State<EstimatorFormScreen> {
                   labelText: 'Cement (kg)',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => (value == null || value.isEmpty)
-                    ? 'Please enter cement quantity'
-                    : null,
+                validator:
+                    (value) =>
+                        (value == null || value.isEmpty)
+                            ? 'Please enter cement quantity'
+                            : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
@@ -137,9 +142,11 @@ class _EstimatorFormScreenState extends State<EstimatorFormScreen> {
                   labelText: 'Steel (kg)',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => (value == null || value.isEmpty)
-                    ? 'Please enter steel quantity'
-                    : null,
+                validator:
+                    (value) =>
+                        (value == null || value.isEmpty)
+                            ? 'Please enter steel quantity'
+                            : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
@@ -150,9 +157,11 @@ class _EstimatorFormScreenState extends State<EstimatorFormScreen> {
                   labelText: 'Labor Hours',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => (value == null || value.isEmpty)
-                    ? 'Please enter labor hours'
-                    : null,
+                validator:
+                    (value) =>
+                        (value == null || value.isEmpty)
+                            ? 'Please enter labor hours'
+                            : null,
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<int>(
@@ -163,9 +172,18 @@ class _EstimatorFormScreenState extends State<EstimatorFormScreen> {
                   border: OutlineInputBorder(),
                 ),
                 items: const [
-                  DropdownMenuItem(value: 0, child: Text('Rural', style: TextStyle(color: Colors.white),)),
-                  DropdownMenuItem(value: 1, child: Text('Urban', style: TextStyle(color: Colors.white),)),
-                  DropdownMenuItem(value: 2, child: Text('Metro', style: TextStyle(color: Colors.white),)),
+                  DropdownMenuItem(
+                    value: 0,
+                    child: Text('Rural', style: TextStyle(color: Colors.white)),
+                  ),
+                  DropdownMenuItem(
+                    value: 1,
+                    child: Text('Urban', style: TextStyle(color: Colors.white)),
+                  ),
+                  DropdownMenuItem(
+                    value: 2,
+                    child: Text('Metro', style: TextStyle(color: Colors.white)),
+                  ),
                 ],
                 onChanged: (value) {
                   if (value != null) {
@@ -178,13 +196,14 @@ class _EstimatorFormScreenState extends State<EstimatorFormScreen> {
               const SizedBox(height: 20),
               ElevatedButton.icon(
                 onPressed: isLoading ? null : estimateCost,
-                icon: isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.calculate),
+                icon:
+                    isLoading
+                        ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                        : const Icon(Icons.calculate),
                 label: const Text("Estimate Cost"),
               ),
               const SizedBox(height: 30),
@@ -195,8 +214,10 @@ class _EstimatorFormScreenState extends State<EstimatorFormScreen> {
                     Text(
                       'Estimated Cost: ₹${predictedCost!.toStringAsFixed(2)}',
                       style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton.icon(
